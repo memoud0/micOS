@@ -1,4 +1,3 @@
-//
 //  micOSApp.swift
 //  micOS
 //
@@ -10,8 +9,16 @@ import SwiftUI
 @main
 struct micOSApp: App {
     var body: some Scene {
-        WindowGroup {
-            ContentView()
+        MenuBarExtra("", systemImage: "ear.fill") {
+            
+            Button {
+                // Action
+            } label: {
+                Image(systemName: "mic.circle.fill")
+                Text("Noise Cancellation ON")
+            }
+            
+            
         }
     }
 }
