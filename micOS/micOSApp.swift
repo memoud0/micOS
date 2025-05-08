@@ -9,13 +9,19 @@ import SwiftUI
 @main
 struct micOSApp: App {
     
+    @StateObject var engine = AudioManager()
     @State private var isActive = false
     
     var body: some Scene {
-        MenuBarExtra("", systemImage: "ear.fill") {
+        MenuBarExtra("micOS", systemImage: "waveform") {
             
             Button(action: {
                 isActive.toggle()
+                if isActive{
+                    engine.start()
+                } else {
+                    engine.stop()
+                }
             }) {
                 Label(isActive ? "Disable Noise Cancellation" : "Enable Noise Cancellation", systemImage: isActive ? "mic.circle.fill" : "mic.circle")
                     .labelStyle(.titleAndIcon)
@@ -25,13 +31,10 @@ struct micOSApp: App {
             Button(action: {
                 NSApplication.shared.terminate(nil)
             }) {
-                Label("Quit", systemImage: isActive ? "ear.circle.fill" : "ear.circle")
+                Label("Quit", systemImage: "xmark.circle")
                     .labelStyle(.titleAndIcon)
             }
-            
-            
-            
-            
+                 
         }
     }
 }
