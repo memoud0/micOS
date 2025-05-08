@@ -1,4 +1,4 @@
-# macOS Noise Cancellation App (In Progress)
+# macOS Noise Cancellation App
 
 A native macOS menu bar application providing real-time noise suppression across all applications, including FaceTime, Zoom, and Discord. The app captures microphone input, processes it through a noise suppression pipeline, and outputs the cleaned audio via a virtual audio device.
 
@@ -24,7 +24,7 @@ A native macOS menu bar application providing real-time noise suppression across
 
 ---
 
-## 📐 Architecture Overview
+## Architecture Overview
 
 1. **User Interface:** SwiftUI-based menu bar app for user interaction.
 2. **Audio Capture:** `AVAudioEngine` captures live microphone input.
