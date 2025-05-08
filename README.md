@@ -6,7 +6,7 @@ A native macOS menu bar application providing real-time noise suppression across
 
 ## Project Status
 
-**Current Phase:** 🛠️ In Development
+**Current Phase:** In Development
 
 - Implemented SwiftUI-based menu bar interface.
 - Configured [BlackHole](https://github.com/ExistentialAudio/BlackHole) virtual audio device for audio routing.
