@@ -10,23 +10,34 @@ import AVFoundation
 class AudioManager: ObservableObject {
     let engine = AVAudioEngine()
     private var isRunning = false
-    
-    private let toneNode = AVAudioSourceNode { _, _, frameCount, audioBufferList -> OSStatus in
+
+    private var currentPhase: Double = 0
+
+    private lazy var toneNode = AVAudioSourceNode { _, _, frameCount, audioBufferList -> OSStatus in
         let ablPointer = UnsafeMutableAudioBufferListPointer(audioBufferList)
-        let sampleRate = 44100.0
-        let frequency = 880.0 // A5 note
-        let amplitude = 0.1
+        
+        let sampleRate       = 44_100.0
+        let frequency        = 880.0
+        let amplitude        = 0.1
+        let phaseIncrement   = 2 * .pi * frequency / sampleRate
 
         for frame in 0..<Int(frameCount) {
-            let sample = Float(sin(2.0 * .pi * frequency * Double(frame) / sampleRate)) * Float(amplitude)
+            let sample = Float(sin(self.currentPhase)) * Float(amplitude)
+            self.currentPhase += phaseIncrement
+            if self.currentPhase >= 2 * .pi {
+                self.currentPhase -= 2 * .pi
+            }
+            
+            // write it into every channel buffer
             for buffer in ablPointer {
-                let buf: UnsafeMutableBufferPointer<Float> = UnsafeMutableBufferPointer(buffer)
+                let buf = UnsafeMutableBufferPointer<Float>(buffer)
                 buf[frame] = sample
             }
         }
-
         return noErr
     }
+    
+
 
     
     init() {
@@ -35,33 +46,27 @@ class AudioManager: ObservableObject {
     
     func start() {
         guard !isRunning else { return }
-        let inputNode = engine.inputNode
-        let outputNode = engine.outputNode
-        let format = inputNode.inputFormat(forBus: 0)
-        
-        engine.disconnectNodeInput(engine.mainMixerNode)
-        engine.disconnectNodeOutput(inputNode)
-        
-        if engine.attachedNodes.contains(toneNode) {
-            engine.disconnectNodeOutput(toneNode)
-        } else {
+
+        currentPhase = 0
+
+        if !engine.attachedNodes.contains(toneNode) {
             engine.attach(toneNode)
         }
-        
-        engine.attach(toneNode)
-        engine.connect(inputNode, to: engine.mainMixerNode, format: format)
-        engine.connect(toneNode, to: engine.mainMixerNode, format: format)
-        engine.connect(engine.mainMixerNode, to: outputNode, format: format)
-        
+
+        let output = engine.outputNode
+        let format = output.inputFormat(forBus: 0)
+
+        engine.connect(toneNode, to: output, format: format)
+
         do {
             try engine.start()
             isRunning = true
-            print("AVAudioEngine started")
+            print("Tone started")
         } catch {
             print("Failed to start engine: \(error.localizedDescription)")
         }
-        
     }
+
     
     func stop(){
         engine.stop()
