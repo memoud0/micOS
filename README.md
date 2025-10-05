@@ -3,8 +3,7 @@
 A native macOS menu bar application providing real-time noise suppression across all applications, including FaceTime, Zoom, and Discord. The app captures microphone input, processes it through a noise suppression pipeline, and outputs the cleaned audio via a virtual audio device.
 
 
-
-https://github.com/user-attachments/assets/f4c85903-c25a-4a12-b973-26fbf5e4fc74
+https://github.com/user-attachments/assets/d494fbc1-6268-4fc0-b17d-bc5492a181de
 
 
 
