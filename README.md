@@ -26,7 +26,7 @@ A native macOS menu bar application providing real-time noise suppression across
 
 1. **User Interface:** SwiftUI-based menu bar app for user interaction.
 2. **Audio Capture:** `AVAudioEngine` captures live microphone input.
-3. **Noise Suppression:** (Planned) Integrate RNNoise for real-time noise reduction.
+3. **Noise Suppression:** Integrate RNNoise for real-time noise reduction.
 4. **Audio Output:** Processed audio routed through BlackHole to be used by other applications.
 
 ---
